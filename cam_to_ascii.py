@@ -10,17 +10,17 @@ lst = lst[::-1]
 # convert pixel to ascii
 def pixtoasc(frame, step):
     # convert to black and white
-    #gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # create empty frame
     ascii_frame = np.zeros_like(frame, dtype=np.uint8)
 
-    rows, cols = frame.shape
-    # iterate through rows in increments of step
+    rows, cols = gray_frame.shape
+    # iterate through rows in increments of 10
     for i in range(0, rows, step):
-        # iterate through columns in increment of step
+        # iterate through columns in increment of 10
         for j in range(0, cols, step):
             # get
-            intensity = frame[i, j]
+            intensity = gray_frame[i, j]
             index = int(intensity / 255 * (len(lst) - 1))
             cv2.putText(ascii_frame, lst[index], (j, i), cv2.FONT_HERSHEY_SIMPLEX, .4, (255, 255, 255), 1, cv2.LINE_AA)
 
@@ -46,8 +46,7 @@ else:
     exit(1)
 
 # set up the virtual cam for use
-fmt = pyvirtualcam.PixelFormat.BGR
-with pyvirtualcam.Camera(width=window_width, height=window_height, fps=30,fmt=fmt) as virtual_cam:
+with pyvirtualcam.Camera(width=window_width, height=window_height, fps=30) as virtual_cam:
     while True:
         # Reading the input using the camera
         ret, frame = cam.read()
