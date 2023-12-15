@@ -1,3 +1,0 @@
-from view import View
-v = View()
-v.start()
